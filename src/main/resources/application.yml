@@ -1,0 +1,42 @@
+# 服务端口配置
+server:
+  port: 8088
+
+# swagger配置
+swagger:
+  enabled: true
+
+# mysql数据库配置
+spring:
+  datasource:
+    username: root
+    password: Chao2134
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    jdbc-url: jdbc:mysql://localhost:3306/xcck?serverTimezone=UTC&characterEncoding=utf8&autoReconnect=true&useSSL=false
+#  profiles:
+#    include: jdbc
+
+
+# mybatis plus 配置
+mybatis-plus:
+  global-config:
+    db-config:
+      id-type: auto
+      field-strategy: not_empty
+      db-type: mysql
+      # 逻辑删除配置
+      logic-delete-value: 0
+      logic-not-delete-value: 1
+      capital-mode: true  # 数据库大写下划线转换
+      column-underline: false
+
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: top.xcck.ecms.model.pojo,top.xcck.ecms.model.dto
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    # oracle数据库必须配置
+    jdbc-type-for-null: 'null'
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    database-id: mysql
