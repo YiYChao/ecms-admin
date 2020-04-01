@@ -1,7 +1,7 @@
 package top.xcck.ecms.service.impl;
 
 import top.xcck.ecms.model.pojo.TbLibpage;
-import top.xcck.ecms.dao.TbLibpageMapper;
+import top.xcck.ecms.mapper.TbLibpageMapper;
 import top.xcck.ecms.service.ITbLibpageService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package top.xcck.ecms.dao;
+package top.xcck.ecms.mapper;
 
 import top.xcck.ecms.model.pojo.TbProduct;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;

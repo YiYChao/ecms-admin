@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/page")
-public class TbLibpageController {
+public class LibpageController {
 
     @Autowired
     private ITbLibpageService libpageService;
@@ -40,7 +40,7 @@ public class TbLibpageController {
     public IPage<TbLibpage> getList(){
         //需要在Config配置类中配置分页插件
         IPage<TbLibpage> page = new Page<>();
-        page.setCurrent(328); //当前页
+        page.setCurrent(398); //当前页
         page.setSize(1);    //每页条数
         IPage<TbLibpage> libpageIPage = libpageService.page(page);
         TbLibpage libpage = libpageIPage.getRecords().get(0);
@@ -60,7 +60,7 @@ public class TbLibpageController {
         for(TbProduct product : productList){
             TbProduct dbProduct = productService.getOne(new QueryWrapper<TbProduct>().lambda().eq(TbProduct::getTitle, product.getTitle()));
             if (dbProduct != null){
-                System.out.println("更新记录：" + dbProduct.getId());
+                System.err.println("更新记录：" + dbProduct.getId());
                 product.setId(dbProduct.getId());
             }
             productService.saveOrUpdate(product);

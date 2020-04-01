@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/ecms/tb-project")
-public class TbProjectController {
+public class ProjectController {
 
 }
 

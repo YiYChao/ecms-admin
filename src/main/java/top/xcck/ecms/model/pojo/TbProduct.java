@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.data.elasticsearch.annotations.Document;
 
 /**
  * <p>
@@ -15,6 +16,7 @@ import lombok.experimental.Accessors;
  * @author YiYChao
  * @since 2020-03-31
  */
+@Document(indexName = "xcck", type = "product")
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
@@ -67,7 +69,7 @@ public class TbProduct implements Serializable {
     /**
      * 商品价格
      */
-    private String price;
+    private Double price;
 
     /**
      * 商品信息更新时间

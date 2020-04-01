@@ -14,6 +14,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     jdbc-url: jdbc:mysql://localhost:3306/xcck?serverTimezone=UTC&characterEncoding=utf8&autoReconnect=true&useSSL=false
+#spring.data.elasticsearch.
 #  profiles:
 #    include: jdbc
 
