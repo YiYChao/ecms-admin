@@ -20,7 +20,7 @@ public class ESConfig extends AbstractElasticsearchConfiguration {
     public RestHighLevelClient elasticsearchClient() {
 
         final ClientConfiguration clientConfiguration = ClientConfiguration.builder()
-            .connectedTo("192.168.240.131:9200")
+            .connectedTo("192.168.100.100:9200")
             .build();
 
         return RestClients.create(clientConfiguration).rest();

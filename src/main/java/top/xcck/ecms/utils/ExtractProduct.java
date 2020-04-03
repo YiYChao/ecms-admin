@@ -7,6 +7,7 @@ import org.jsoup.select.Elements;
 import org.springframework.stereotype.Component;
 import top.xcck.ecms.model.pojo.TbProduct;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -55,7 +56,11 @@ public class ExtractProduct {
             product.setBrand(brand);
             // 获得发布时间
             String release = tds.get(4).text();
-            product.setReleased(release);
+            try {
+                product.setReleased(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(release));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             // 获得产品状态
             String pStatus = tds.get(5).text();
             product.setPdtStatus(pStatus);
@@ -63,7 +68,7 @@ public class ExtractProduct {
             String cStatus = tds.get(6).text();
             product.setCntStatus(cStatus);
             // 设置更新时间
-            product.setUpdated(new SimpleDateFormat("YYYY-MM-dd HH:mm:ss").format(new Date()));
+            product.setUpdated(new Date());
             // 将产品加入到列表
 //            String parent = tr.attr("class");
 //            if ("children-tr".equals(parent)){  // 字码

@@ -1,12 +1,18 @@
 package top.xcck.ecms.model.pojo;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.TableId;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.data.elasticsearch.annotations.DateFormat;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.data.elasticsearch.annotations.Field;
+import org.springframework.data.elasticsearch.annotations.FieldType;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <p>
@@ -29,27 +35,33 @@ public class TbProduct implements Serializable {
     /**
      * 商品名称
      */
+    @Field(index = true, type = FieldType.Text, analyzer = "ik_smart", store = true)
     private String title;
 
     /**
      * 商品编码
      */
+    @Field(index = true, type = FieldType.Text, store = true)
     private String code;
 
     /**
      * 商品分类
      */
+    @Field(index = true, type = FieldType.Text, analyzer = "ik_smart")
     private String category;
 
     /**
      * 商品品牌
      */
+    @Field(index = true, type = FieldType.Text, analyzer = "ik_smart")
     private String brand;
 
     /**
      * 商品发布日期
      */
-    private String released;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date released;
 
     /**
      * 商品状态
@@ -74,7 +86,9 @@ public class TbProduct implements Serializable {
     /**
      * 商品信息更新时间
      */
-    private String updated;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    private Date updated;
 
     /**
      * 父级编码
