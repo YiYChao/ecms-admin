@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="fonts/icon/iconfont.css" />
+    <link rel="stylesheet" href="css/common.css" />
+    <script type="text/javascript" charset="utf-8">
+      	mui.init();
+      	mui.plusReady(function(){
+      		plus.navigator.setStatusBarStyle("light")
+      		plus.navigator.setStatusBarBackground("#FF6347")
+      	});
+    </script>
+</head>
+<body>
+	<header class="mui-bar mui-bar-nav title">
+	    <h1 class="mui-title title-text">主站商品</h1>
+	</header>
+	<nav class="mui-bar mui-bar-tab">
+	    <a class="mui-tab-item mui-active" tabIndex="0">
+	        <span class="mui-icon iconfont icon-tongyong"></span>
+	        <span class="mui-tab-label">首页</span>
+	    </a>
+	    <a class="mui-tab-item" tabIndex="1">
+	        <span class="mui-icon iconfont icon-zhuanshutequan"></span>
+	        <span class="mui-tab-label">专属</span>
+	    </a>
+	    <a class="mui-tab-item" tabIndex="2">
+	        <span class="mui-icon iconfont icon-xiangmu"></span>
+	        <span class="mui-tab-label">项目</span>
+	    </a>
+	    <a class="mui-tab-item" tabIndex="3">
+	        <span class="mui-icon iconfont icon-yewu"></span>
+	        <span class="mui-tab-label">业务</span>
+	    </a>
+	</nav>
+	
+	<script type="text/javascript">
+		var esmsArray = [
+		{pageId : "main.html", pageUrl : "main.html"},
+		{pageId : "special.html", pageUrl : "special.html"},
+		{pageId : "project.html", pageUrl : "project.html"},
+		{pageId : "business.html", pageUrl : "business.html"}
+		];
+		var yixunStyle = {
+			top : "44px",
+			bottom : "50px"
+		};
+		mui.plusReady(function(){
+			// 禁止返回到登录注册页面
+//			mui.back = function() {
+//				return false;
+//			}
+			// 双击返回退出应用
+			var first = null;            
+			var oldback = mui.back;            
+			mui.back = function() {               
+				if(!first) {                  
+					first = new Date().getTime();                  
+					mui.toast('再按一次退出应用');                  
+					setTimeout(function() {                     
+						first = null;                  
+					}, 2000);               
+				} else {                  
+					if(new Date().getTime() - first < 2000) {                     
+						plus.runtime.quit();                  
+					}               
+				}            
+			};
+			
+			// 获取当前的webview对象
+			var currentWebview = plus.webview.currentWebview();
+			// 向当前主页对象追加4张webview对象子页
+			for (var i = 0; i < esmsArray.length; i++) {
+				var ecmsPage = plus.webview.create(esmsArray[i].pageUrl, esmsArray[i].pageId, yixunStyle);
+				// 隐藏新增的窗口
+				ecmsPage.hide();
+				//将新创建的子页面追加到主页面
+				currentWebview.append(ecmsPage);
+			}
+			// 显示第一个页面
+			plus.webview.show(esmsArray[0].pageId);
+		});
+		mui(".mui-bar-tab").on("tap", "a", function(){
+			var tabIndex = this.getAttribute("tabIndex");
+			plus.webview.show(esmsArray[tabIndex].pageId, "fade-in", 200);
+			// 将其它的页面隐藏
+			for (var i = 0; i < esmsArray.length; i++) {
+				if(i != tabIndex){
+					plus.webview.hide(esmsArray[i].pageId, "fade-out", 200);
+				}
+			}
+		});
+	</script>
+</body>
+</html>

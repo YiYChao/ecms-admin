@@ -1,0 +1,37 @@
+{
+  "id": "1719625",
+  "name": "ecms",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "657538",
+      "name": "分期－通用",
+      "font_class": "tongyong",
+      "unicode": "e65a",
+      "unicode_decimal": 58970
+    },
+    {
+      "icon_id": "5334204",
+      "name": "项目",
+      "font_class": "xiangmu",
+      "unicode": "e62e",
+      "unicode_decimal": 58926
+    },
+    {
+      "icon_id": "6255769",
+      "name": "专属特权",
+      "font_class": "zhuanshutequan",
+      "unicode": "e608",
+      "unicode_decimal": 58888
+    },
+    {
+      "icon_id": "9454029",
+      "name": "业务",
+      "font_class": "yewu",
+      "unicode": "e66c",
+      "unicode_decimal": 58988
+    }
+  ]
+}

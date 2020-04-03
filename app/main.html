@@ -1,0 +1,92 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<script type="text/javascript" src="css/app.js" ></script>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			    <div class="mui-scroll">
+					<ul class="mui-table-view" id="productList">
+					</ul>			        
+			    </div>
+			</div>
+		</div>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			var pageIndex = 0;
+			var totalPage = 0;
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					up: {
+						height:50,
+						auto:true,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+			
+			function appendProduct(productList){
+				var postProduct = "";
+				for (var i = 0; i < productList.length; i++) {
+					postProduct +='<li class="mui-table-view-cell product-list">'+
+										'<a href="javascript:;">'+
+											'<div class="mui-row product-item">'+
+												'<!--左侧图片-->'+
+												'<div class="mui-col-xs-4 product-left">'+
+													'<img class="pdt-img" src="'+productList[i].imgUrl.replace("_60w_60h","_100w_100h") +'"/>'+
+												'</div>'+
+												'<!--右侧信息-->'+
+												'<div class="mui-col-xs-8">'+
+													'<!--标题-->'+
+													' <h4 class="mui-ellipsis-2 product-title">'+productList[i].title+'</h4>'+
+													'<!--价格-->'+
+													'<div class="product-price">￥33.80</div>'+
+													'<div class="product-code">商品编码：<span>'+productList[i].code+'</span></div>'+
+													'<div class="product-status mui-row">'+
+														'<div class="mui-col-xs-3">'+productList[i].pdtStatus+'</div>'+
+														'<div class="mui-col-xs-4">'+productList[i].cntStatus+'</div>'+
+														'<div class="mui-col-xs-5"><span class="mui-pull-right">'+productList[i].updated+'</span></div>'+
+													'</div>'+
+												'</div>'+
+											'</div>'+
+										'</a>'+
+									'</li>';
+				}
+				var preProduct = document.getElementById("productList").innerHTML;
+				document.getElementById("productList").innerHTML = preProduct + postProduct;
+			};
+			
+			function pulldownRefresh(){
+				console.log("下拉。。。")
+			};
+			
+			function pullupRefresh(){
+                mui.post(app.serverUrl + '/product/query',{
+						title:'',
+						code:'',
+						from: pageIndex
+				},function(data){
+						totalPage = data.totalPages;
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((pageIndex >= totalPage));
+						appendProduct(data.content);
+					},'json'
+				);
+                pageIndex += 1;
+                
+            };
+			
+		</script>
+	</body>
+
+</html>
