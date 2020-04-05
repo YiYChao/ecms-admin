@@ -1,0 +1,86 @@
+.title{
+	background-color: #FF6347;
+}
+.title-text{
+	color: white;
+	font-weight: 800;
+	font-size: 18px;
+}
+.mui-bar .mui-tab-item.mui-active{
+	color: #FF6347;
+}
+
+
+/*.product-left{
+	overflow: hidden;
+}*/
+.conditions{
+	height: 30px;
+	line-height: 30px;
+	background-color: #FF6347;
+}
+.pdt-img{
+	width: 100px;
+	height: auto;
+}
+.product-title{
+	font-size: 16px;
+	font-weight: 500;
+	color: #000000;
+	line-height: 1.2em;
+}
+.product-price{
+	font-size: medium;
+	color: #FF6347;
+}
+.product-code{
+	font-size: smaller;
+}
+.product-status{
+	font-size: x-small;
+}
+/*.searchDiv{
+	margin: 0px;
+	padding: 0px;
+}*/
+#searchInput{
+	/*background-color: #AAAAAA;*/
+	margin-bottom: 0px;
+}
+
+#searchInputP{
+	width: 90%;
+	margin-bottom: 0px;
+}
+
+.mui-badge1{
+	padding:0px; 
+	width:65%; 
+	float:right; 
+	line-height:42px; 
+	font-size:14px;
+}
+
+
+/* information*/
+.rst-msg{
+	text-align: center;
+	vertical-align: middle;
+}
+.time-msg{
+	text-align: center;
+	vertical-align: middle;
+	font-size: 14px;
+}
+.pass-color{
+	color: #00CD66;
+}
+.fail-color{
+	color: #FF3030;
+}
+.warm-color{
+	color: #FF8C00;
+}
+.finish-clor{
+	color: #1874CD;
+}

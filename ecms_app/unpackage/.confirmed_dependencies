@@ -1,0 +1,14 @@
+{
+	"index.html": {
+		"resources": [
+			"main.html"
+		],
+		"refer": [
+			"main.html",
+			"project.html",
+			"business.html",
+			"special.html",
+			"information.html"
+		]
+	}
+}

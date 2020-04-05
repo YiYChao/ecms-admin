@@ -1,0 +1,151 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" href="css/common.css" />
+		<script type="text/javascript" src="js/app.js" ></script>
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div class="mui-input-row">
+					<label>选择项目：</label>
+					<a class="mui-navigate-right">
+						<span class="mui-badge1">
+							<select class="mui-h5" style="margin:auto; color:#000;">
+								<option value="0">全部</option>
+								<option value="1">山西潞安矿业（集团）有限责任公司</option>
+								<option value="2">恒大地产集团太原有限公司</option>
+								<option value="3">华夏银行太原分行</option>
+								<option value="4">交通银行股份有限公司山西省分行</option>
+								<option value="5">联通系统集成有限公司</option>
+								<option value="6">中国铁路太原局集团有限公司</option>
+								<option value="7">山西煤炭进出口集团有限公司</option>
+								<option value="8">中国邮政集团公司山西省分公司</option>
+								<option value="9">中煤信息技术（北京）有限公司</option>
+							</select>
+						</span> 
+					</a>
+				</div>
+			<div class="mui-input-row mui-search searchDiv">
+			    <input type="search" id="searchInput" class="mui-input-speech mui-input-clear" onkeyup="enterSearch(event)" placeholder="请输入搜索关键词">
+			</div>
+			<div id="pullrefresh" class="mui-content mui-scroll-wrapper">
+			    <div class="mui-scroll">
+					<ul class="mui-table-view" id="productList">
+					</ul>
+			    </div>
+			</div>
+		</div>
+		
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			var query = {"keyword":"", "page":0, "size":15, "project":[]}
+			var totalPage = 0;
+			mui.init({
+				pullRefresh: {
+					container: '#pullrefresh',
+					up: {
+						height:50,
+						auto:true,
+						contentrefresh: '正在加载...',
+						callback: pullupRefresh
+					}
+				}
+			});
+	        
+	        // 下拉事件
+			function pulldownRefresh(){
+				console.log("下拉。。。")
+			}
+			
+			// 上拉事件
+			function pullupRefresh(){
+                queryProduct(query);
+            }
+			
+			// 搜索事件,获取搜索关键词
+	        function enterSearch(event){
+	            if(event.keyCode == 13) {//用户点击回车的事件号为13
+	                var keyword = document.getElementById('searchInput').value;
+	                query.keyword = keyword;
+	                query.page = 0;
+	                document.getElementById("productList").innerHTML = "";
+	                queryProduct(query);
+	                document.getElementById('searchInput').blur();
+	            }
+	        }
+			/*防止软键盘调起时，底部内容随之挤上来*/
+			//获取原始窗口的高度
+			var originalHeight = document.documentElement.clientHeight || document.body.clientHeight;
+			window.onresize = function() {
+				//软键盘弹起与隐藏  都会引起窗口的高度发生变化
+				var resizeHeight = document.documentElement.clientHeight || document.body.clientHeight;
+				if(resizeHeight * 1 < originalHeight * 1) { //resizeHeight<originalHeight证明窗口被挤压了
+					plus.webview.currentWebview().setStyle({
+						height: originalHeight
+					});
+				}
+			}
+			
+			// 查询商品信息，参数为json对象
+			function queryProduct(parmas){
+				mui.ajax(app.serverUrl + '/product/query',{
+					data: parmas,
+					dataType:'json',//服务器返回json格式数据
+					type:'post',//HTTP请求类型
+					contentType: "application/json;charset=UTF-8",
+					timeout:10000,//超时时间设置为10秒；
+					headers:{'Content-Type':'application/json'},	              
+					success:function(data){
+						totalPage = data.totalPages;
+						mui('#pullrefresh').pullRefresh().refresh(true);
+						mui('#pullrefresh').pullRefresh().endPullupToRefresh((query.page >= totalPage));
+						appendProduct(data.content);
+						query.page += 1;
+					},
+					error:function(xhr,type,errorThrown){
+						//异常处理；
+						console.log(type);
+					}
+				});
+			}
+			
+			function appendProduct(productList){
+				var postProduct = "";
+				for (var i = 0; i < productList.length; i++) {
+					postProduct +='<li class="mui-table-view-cell product-list">'+
+										'<a href="javascript:;">'+
+											'<div class="mui-row product-item">'+
+												'<!--左侧图片-->'+
+												'<div class="mui-col-xs-4 product-left">'+
+													'<img class="pdt-img" src="'+productList[i].imgUrl.replace("_60w_60h","_100w_100h") +'"/>'+
+												'</div>'+
+												'<!--右侧信息-->'+
+												'<div class="mui-col-xs-8">'+
+													'<!--标题-->'+
+													' <h4 class="mui-ellipsis-2 product-title">'+productList[i].title+'</h4>'+
+													'<!--价格-->'+
+													'<div class="product-price">￥'+(productList[i].price == null? '--': productList[i].price)+'</div>'+
+													'<div class="product-code">商品编码：<span>'+(productList[i].code == null?'':productList[i].code)+'</span></div>'+
+													'<div class="product-status mui-row">'+
+														'<div class="mui-col-xs-3">'+productList[i].pdtStatus+'</div>'+
+														'<div class="mui-col-xs-4">'+productList[i].cntStatus+'</div>'+
+														'<div class="mui-col-xs-5"><span class="mui-pull-right">'+productList[i].updated+'</span></div>'+
+													'</div>'+
+												'</div>'+
+											'</div>'+
+										'</a>'+
+									'</li>';
+				}
+				var preProduct = document.getElementById("productList").innerHTML;
+				document.getElementById("productList").innerHTML = preProduct + postProduct;
+			};
+		</script>
+	</body>
+
+</html>
