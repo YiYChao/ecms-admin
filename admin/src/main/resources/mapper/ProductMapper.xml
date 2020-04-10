@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.xcck.admin.dao.ProductDao" >
+    <sql id="select">
+        a.id,
+        a.title,
+        a.code,
+        a.category,
+        a.brand,
+        a.pdt_status  AS "prodStatus",
+        a.cont_status  AS "contStatus",
+        a.img_url as imgUrl,
+        a.price,
+        a.parent,
+        a.desc,
+        a.create_date   AS "createDate",
+        a.create_by     AS "createId",
+        a.update_date   AS "updateDate",
+        a.update_by     AS "updateId",
+    </sql>
+
+</mapper>
