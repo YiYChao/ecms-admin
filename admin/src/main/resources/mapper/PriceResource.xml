@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.xcck.admin.dao.PriceResourceDao" >
+    <sql id="select">
+        a.id,
+        a.brand,
+        a.type,
+        a.color,
+        a.size,
+        a.shape,
+        a.spec,
+        a.others,
+        a.cost,
+        a.estimate_min AS "estimateMin",
+        a.estimate_max AS "estimateMax",
+        web_url,
+        a.create_date   AS "createDate",
+        a.create_by     AS "createId",
+        a.update_date   AS "updateDate",
+        a.update_by     AS "updateId",
+    </sql>
+
+</mapper>

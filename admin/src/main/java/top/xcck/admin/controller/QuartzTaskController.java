@@ -26,14 +26,6 @@ import javax.servlet.ServletRequest;
 import java.util.List;
 import java.util.Map;
 
-/**
- * <p>
- * 定时任务  前端控制器
- * </p>
- *
- * @author wangl
- * @since 2018-01-24
- */
 @Controller
 @RequestMapping("/admin/quartzTask")
 public class QuartzTaskController {

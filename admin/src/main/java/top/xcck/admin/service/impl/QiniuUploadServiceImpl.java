@@ -1,10 +1,10 @@
 package top.xcck.admin.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import top.xcck.admin.entity.Rescource;
+import top.xcck.admin.entity.Resource;
 import top.xcck.admin.entity.UploadInfo;
 import top.xcck.admin.exception.MyException;
-import top.xcck.admin.service.RescourceService;
+import top.xcck.admin.service.ResourceService;
 import top.xcck.admin.service.UploadInfoService;
 import top.xcck.admin.service.UploadService;
 import top.xcck.admin.util.QETag;
@@ -37,7 +37,7 @@ public class QiniuUploadServiceImpl implements UploadService {
     private UploadInfoService uploadInfoService;
 
     @Autowired
-    private RescourceService rescourceService;
+    private ResourceService rescourceService;
 
     private UploadInfo getUploadInfo(){
         return uploadInfoService.getOneInfo();
@@ -76,7 +76,7 @@ public class QiniuUploadServiceImpl implements UploadService {
             byte[] data = file.getBytes();
             QETag tag = new QETag();
             String hash = tag.calcETag(file);
-            Rescource rescource = new Rescource();
+            Resource rescource = new Resource();
             EntityWrapper<RestResponse> wrapper = new EntityWrapper<>();
             wrapper.eq("hash",hash);
             wrapper.eq("source","qiniu");
@@ -95,7 +95,7 @@ public class QiniuUploadServiceImpl implements UploadService {
             Response r = getUploadManager().put(data, key.toString(), getAuth());
             if (r.isOK()) {
                 filePath = getUploadInfo().getQiniuBasePath() + fileName;
-                rescource = new Rescource();
+                rescource = new Resource();
                 rescource.setFileName(fileName);
                 rescource.setFileSize(new java.text.DecimalFormat("#.##").format(file.getSize()/1024)+"kb");
                 rescource.setHash(hash);
@@ -110,11 +110,11 @@ public class QiniuUploadServiceImpl implements UploadService {
 
     @Override
     public Boolean delete(String path) {
-        EntityWrapper<Rescource> wrapper = new EntityWrapper<>();
+        EntityWrapper<Resource> wrapper = new EntityWrapper<>();
         wrapper.eq("web_url",path);
         wrapper.eq("del_flag",false);
         wrapper.eq("source","qiniu");
-        Rescource rescource = rescourceService.selectOne(wrapper);
+        Resource rescource = rescourceService.selectOne(wrapper);
         path = rescource.getOriginalNetUrl();
         try {
             getBucketManager().delete(getUploadInfo().getQiniuBucketName(), path);
@@ -129,11 +129,11 @@ public class QiniuUploadServiceImpl implements UploadService {
     @Override
     public String uploadNetFile(String url) throws IOException, NoSuchAlgorithmException {
         String fileName = RandomUtil.randomUUID();
-        EntityWrapper<Rescource> wrapper = new EntityWrapper<>();
+        EntityWrapper<Resource> wrapper = new EntityWrapper<>();
         wrapper.eq("source","qiniu");
         wrapper.eq("original_net_url",url);
         wrapper.eq("del_flag",false);
-        Rescource rescource = rescourceService.selectOne(wrapper);
+        Resource rescource = rescourceService.selectOne(wrapper);
         if(rescource != null){
             return rescource.getWebUrl();
         }
@@ -149,7 +149,7 @@ public class QiniuUploadServiceImpl implements UploadService {
             key.append(fileName);
             returnUrl.append(fileName);
             FetchRet fetchRet = getBucketManager().fetch(url, getUploadInfo().getQiniuBucketName(),key.toString());
-            rescource = new Rescource();
+            rescource = new Resource();
             rescource.setFileName(fetchRet.key);
             rescource.setFileSize(new java.text.DecimalFormat("#.##").format(fetchRet.fsize/1024)+"kb");
             rescource.setHash(fetchRet.hash);
@@ -179,7 +179,7 @@ public class QiniuUploadServiceImpl implements UploadService {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        Rescource rescource = new Rescource();
+        Resource rescource = new Resource();
         EntityWrapper<RestResponse> wrapper = new EntityWrapper<>();
         wrapper.eq("hash",hash);
         wrapper.eq("source","qiniu");
@@ -209,7 +209,7 @@ public class QiniuUploadServiceImpl implements UploadService {
         }
         if(response.isOK()){
             filePath = returnUrl.toString();
-            rescource = new Rescource();
+            rescource = new Resource();
             rescource.setFileName(name+extName);
             rescource.setFileSize(new java.text.DecimalFormat("#.##").format(file.length()/1024)+"kb");
             rescource.setHash(hash);

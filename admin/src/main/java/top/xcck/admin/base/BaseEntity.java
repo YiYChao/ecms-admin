@@ -13,15 +13,11 @@ import java.io.Serializable;
 
 public abstract class BaseEntity<T extends Model> extends Model<T>  {
 
-
-
     /**
      * 实体编号（唯一标识）
      */
 
     protected Long id;
-
-
 
     public BaseEntity() {
 
@@ -31,6 +27,7 @@ public abstract class BaseEntity<T extends Model> extends Model<T>  {
         this();
         this.id = id;
     }
+
     @JsonSerialize(using=ToStringSerializer.class)
     public Long getId() {
         return id;
@@ -59,8 +56,4 @@ public abstract class BaseEntity<T extends Model> extends Model<T>  {
         BaseEntity<?> that = (BaseEntity<?>) obj;
         return null != this.getId() && this.getId().equals(that.getId());
     }
-
-
-
-
 }

@@ -1,6 +1,6 @@
 package top.xcck.admin.service;
 
-import top.xcck.admin.entity.Rescource;
+import top.xcck.admin.entity.Resource;
 import com.baomidou.mybatisplus.service.IService;
 /**
  * <p>
@@ -10,10 +10,10 @@ import com.baomidou.mybatisplus.service.IService;
  * @author wangl
  * @since 2018-01-14
  */
-public interface RescourceService extends IService<Rescource> {
+public interface ResourceService extends IService<Resource> {
 
     int getCountByHash(String hash);
 
-    Rescource getRescourceByHash(String hash);
+    Resource getRescourceByHash(String hash);
 
 }

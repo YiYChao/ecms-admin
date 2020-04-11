@@ -64,9 +64,6 @@ public abstract class DataEntity<T extends Model> extends BaseEntity<T> {
     @TableField(exist = false)
     protected User updateUser;
 
-
-
-
     public Long getCreateId() {
         return createId;
     }
@@ -74,7 +71,6 @@ public abstract class DataEntity<T extends Model> extends BaseEntity<T> {
     public void setCreateId(Long createId) {
         this.createId = createId;
     }
-
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     public Date getCreateDate() {
@@ -101,7 +97,6 @@ public abstract class DataEntity<T extends Model> extends BaseEntity<T> {
     public DataEntity(Long id) {
         super(id);
     }
-
 
     public String getRemarks() {
         return remarks;

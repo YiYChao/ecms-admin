@@ -77,8 +77,10 @@ mybatis-plus:
     #逻辑删除配置
     #    logic-delete-value: 1
     #    logic-not-delete-value: 0
+    # 自定义填充策略接口实现
     #自定义SQL注入器
     #sql-injector: com.baomidou.springboot.xxx
+    meta-object-handler: top.xcck.admin.config.SysMetaObjectHandler
   configuration:
     map-underscore-to-camel-case: true
     cache-enabled: false

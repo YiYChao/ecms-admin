@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import top.xcck.admin.base.DataEntity;
 
-@TableName("sys_rescource")
-public class Rescource extends DataEntity<Rescource> {
+@TableName("sys_resource")
+public class Resource extends DataEntity<Resource> {
 
     private static final long serialVersionUID = 1L;
 

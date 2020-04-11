@@ -30,7 +30,7 @@ public class BaseController {
 	protected DictService dictService;
 
 	@Autowired
-	protected RescourceService rescourceService;
+	protected ResourceService resourceService;
 
 	@Autowired
 	protected TableService tableService;
@@ -52,4 +52,10 @@ public class BaseController {
 
 	@Autowired
 	protected ProductService productService;
+
+	@Autowired
+	protected PriceResourceService priceResourceService;
+
+	@Autowired
+	protected PriceResultService priceResultService;
 }

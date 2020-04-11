@@ -5,10 +5,10 @@ import com.aliyun.oss.common.comm.ResponseMessage;
 import com.aliyun.oss.model.ObjectMetadata;
 import com.aliyun.oss.model.PutObjectResult;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import top.xcck.admin.entity.Rescource;
+import top.xcck.admin.entity.Resource;
 import top.xcck.admin.entity.UploadInfo;
 import top.xcck.admin.exception.MyException;
-import top.xcck.admin.service.RescourceService;
+import top.xcck.admin.service.ResourceService;
 import top.xcck.admin.service.UploadInfoService;
 import top.xcck.admin.service.UploadService;
 import top.xcck.admin.util.QETag;
@@ -34,7 +34,7 @@ import java.util.UUID;
 public class OssUploadServiceImpl implements UploadService {
 
     @Autowired
-    private RescourceService rescourceService;
+    private ResourceService rescourceService;
 
     @Autowired
     private UploadInfoService uploadInfoService;
@@ -60,7 +60,7 @@ public class OssUploadServiceImpl implements UploadService {
             realName.append(fileExtension);
             QETag tag = new QETag();
             String hash = tag.calcETag(file);
-            Rescource rescource = new Rescource();
+            Resource rescource = new Resource();
             EntityWrapper<RestResponse> wrapper = new EntityWrapper<>();
             wrapper.eq("hash",hash);
             wrapper.eq("source","oss");
@@ -93,7 +93,7 @@ public class OssUploadServiceImpl implements UploadService {
             PutObjectResult putResult = getOSSClient().putObject(getUploadInfo().getOssBucketName(), key.toString(), is, metadata);
             //解析结果
             System.out.println("md5码为"+putResult.getETag());
-            rescource = new Rescource();
+            rescource = new Resource();
             rescource.setFileName(realName.toString());
             rescource.setFileSize(new java.text.DecimalFormat("#.##").format(file.getSize()/1024)+"kb");
             rescource.setHash(hash);
@@ -120,7 +120,7 @@ public class OssUploadServiceImpl implements UploadService {
         String key = path.replace(sb.toString(),"");
         try {
             getOSSClient().deleteObject(getUploadInfo().getOssBucketName(), path);
-            EntityWrapper<Rescource> wrapper = new EntityWrapper<>();
+            EntityWrapper<Resource> wrapper = new EntityWrapper<>();
             wrapper.eq("file_name",key);
             wrapper.eq("source","oss");
             rescourceService.delete(wrapper);
@@ -132,10 +132,10 @@ public class OssUploadServiceImpl implements UploadService {
 
     @Override
     public String uploadNetFile(String url) throws IOException, NoSuchAlgorithmException {
-        EntityWrapper<Rescource> wrapper = new EntityWrapper<>();
+        EntityWrapper<Resource> wrapper = new EntityWrapper<>();
         wrapper.eq("source","oss");
         wrapper.eq("original_net_url",url);
-        Rescource rescource = rescourceService.selectOne(wrapper);
+        Resource rescource = rescourceService.selectOne(wrapper);
         if(rescource != null){
             return rescource.getWebUrl();
         }
@@ -152,7 +152,7 @@ public class OssUploadServiceImpl implements UploadService {
         PutObjectResult putObjectResult = getOSSClient().putObject(getUploadInfo().getOssBucketName(), key.toString(), inputStream);
         ResponseMessage responseMessage = putObjectResult.getResponse();
         returnUrl.append(key);
-        rescource = new Rescource();
+        rescource = new Resource();
         rescource.setFileName(sb.append(".jpg").toString());
         rescource.setHash(putObjectResult.getETag());
         rescource.setWebUrl(returnUrl.toString());
@@ -180,7 +180,7 @@ public class OssUploadServiceImpl implements UploadService {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        Rescource rescource = new Rescource();
+        Resource rescource = new Resource();
         EntityWrapper<RestResponse> wrapper = new EntityWrapper<>();
         wrapper.eq("hash",hash);
         wrapper.eq("source","oss");
@@ -203,7 +203,7 @@ public class OssUploadServiceImpl implements UploadService {
         StringBuffer realName = new StringBuffer(name);
         getOSSClient().putObject(getUploadInfo().getOssBucketName(), key.toString(), file);
         returnUrl.append(realName);
-        rescource = new Rescource();
+        rescource = new Resource();
         rescource.setFileName(realName.append(".").append(extName).toString());
         rescource.setFileSize(new java.text.DecimalFormat("#.##").format(file.length()/1024)+"kb");
         rescource.setHash(hash);

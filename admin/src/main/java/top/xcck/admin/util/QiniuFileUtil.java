@@ -1,7 +1,7 @@
 package top.xcck.admin.util;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import top.xcck.admin.entity.Rescource;
+import top.xcck.admin.entity.Resource;
 import top.xcck.admin.exception.MyException;
 import com.qiniu.common.QiniuException;
 import com.qiniu.common.Zone;
@@ -52,7 +52,7 @@ public class QiniuFileUtil {
 			byte[] data = file.getBytes();
 			QETag tag = new QETag();
 			String hash = tag.calcETag(file);
-			Rescource rescource = new Rescource();
+			Resource rescource = new Resource();
 			EntityWrapper<RestResponse> wrapper = new EntityWrapper<>();
 			wrapper.eq("hash",hash);
 			rescource = rescource.selectOne(wrapper);
@@ -62,7 +62,7 @@ public class QiniuFileUtil {
 			Response r = uploadManager.put(data, fileName, token);
 			if (r.isOK()) {
 				filePath = path + fileName;
-				rescource = new Rescource();
+				rescource = new Resource();
 				rescource.setFileName(fileName);
 				rescource.setFileSize(new java.text.DecimalFormat("#.##").format(file.getSize()/1024)+"kb");
 				rescource.setHash(hash);
@@ -106,7 +106,7 @@ public class QiniuFileUtil {
 		try {
 			FetchRet fetchRet = bucketManager.fetch(src, bucketName);
 			filePath = path + fetchRet.key;
-			Rescource rescource = new Rescource();
+			Resource rescource = new Resource();
 			rescource.setFileName(fetchRet.key);
 			rescource.setFileSize(new java.text.DecimalFormat("#.##").format(fetchRet.fsize/1024)+"kb");
 			rescource.setHash(fetchRet.hash);
@@ -138,7 +138,7 @@ public class QiniuFileUtil {
 		}
 		QETag tag = new QETag();
 		String hash = tag.calcETag(file);
-		Rescource rescource = new Rescource();
+		Resource rescource = new Resource();
 		EntityWrapper<RestResponse> wrapper = new EntityWrapper<>();
 		wrapper.eq("hash",hash);
 		rescource = rescource.selectOne(wrapper);
@@ -153,7 +153,7 @@ public class QiniuFileUtil {
 		Response response = uploadManager.put(file,name,token);
 		if(response.isOK()){
 			filePath = path + name;
-			rescource = new Rescource();
+			rescource = new Resource();
 			rescource.setFileName(name);
 			rescource.setFileSize(new java.text.DecimalFormat("#.##").format(file.length()/1024)+"kb");
 			rescource.setHash(hash);

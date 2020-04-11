@@ -1,7 +1,7 @@
 package top.xcck.admin.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import top.xcck.admin.entity.Rescource;
+import top.xcck.admin.entity.Resource;
 import top.xcck.admin.entity.UploadInfo;
 import top.xcck.admin.exception.MyException;
 import top.xcck.admin.service.UploadService;
@@ -26,7 +26,7 @@ public class LocalUploadServiceImpl implements UploadService {
     public String upload(MultipartFile file) throws IOException, NoSuchAlgorithmException {
         byte[] data = file.getBytes();
         QETag tag = new QETag();
-        Rescource rescource = new Rescource();
+        Resource rescource = new Resource();
         String hash = tag.calcETag(file);
         EntityWrapper<RestResponse> wrapper = new EntityWrapper<>();
         wrapper.eq("hash",hash);
@@ -50,7 +50,7 @@ public class LocalUploadServiceImpl implements UploadService {
         out.flush();
         out.close();
         String webUrl = "/static/upload/"+fileName;
-        rescource = new Rescource();
+        rescource = new Resource();
         rescource.setFileName(fileName);
         rescource.setFileSize(new java.text.DecimalFormat("#.##").format(file.getSize()/1024)+"kb");
         rescource.setHash(hash);
@@ -75,7 +75,7 @@ public class LocalUploadServiceImpl implements UploadService {
 
     @Override
     public String uploadNetFile(String url) throws IOException, NoSuchAlgorithmException {
-        Rescource rescource = new Rescource();
+        Resource rescource = new Resource();
         EntityWrapper<RestResponse> wrapper = new EntityWrapper<>();
         wrapper.eq("original_net_url",url);
         wrapper.eq("source","local");
@@ -103,7 +103,7 @@ public class LocalUploadServiceImpl implements UploadService {
         String webUrl = "";
         if(targetFile.exists()){
             webUrl = "/static/upload/"+fileName;
-            rescource = new Rescource();
+            rescource = new Resource();
             QETag tag = new QETag();
             rescource.setFileName(fileName);
             rescource.setFileSize(new java.text.DecimalFormat("#.##").format(br.read(buf)/1024)+"kb");
@@ -136,7 +136,7 @@ public class LocalUploadServiceImpl implements UploadService {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
-        Rescource rescource = new Rescource();
+        Resource rescource = new Resource();
         EntityWrapper<RestResponse> wrapper = new EntityWrapper<>();
         wrapper.eq("hash",hash);
         rescource = rescource.selectOne(wrapper);

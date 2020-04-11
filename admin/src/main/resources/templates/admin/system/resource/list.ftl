@@ -95,7 +95,7 @@
 
         t = {
             elem: '#test',
-            url:'${base}/admin/system/rescource/list',
+            url:'${base}/admin/system/resource/list',
             method:'post',
             page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
                 layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'], //自定义分页布局
@@ -126,7 +126,7 @@
             if(obj.event === "del"){
                 layer.confirm("你确定要删除该资源么？",{btn:['是的,我确定','我再想想']},
                     function(){
-                        $.post("${base}/admin/system/rescource/delete",{"ids":[data.id]},function (res){
+                        $.post("${base}/admin/system/resource/delete",{"ids":[data.id]},function (res){
                            if(res.success){
                                layer.msg("删除成功",{time: 1000},function(){
                                    table.reload('test', t);
@@ -159,7 +159,7 @@
                             for(var i=0;i<data.length;i++){
                                 d.push(data[i].id);
                             }
-                            $.post("${base}/admin/system/rescource/delete",{ids:d},function (res) {
+                            $.post("${base}/admin/system/resource/delete",{ids:d},function (res) {
                                 if(res.success){
                                     layer.msg("删除成功",{time: 1000},function(){
                                         table.reload('test', t);
