@@ -1,19 +1,11 @@
 package top.xcck.admin.service.impl;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import top.xcck.admin.entity.Resource;
-import top.xcck.admin.entity.UploadInfo;
-import top.xcck.admin.exception.MyException;
-import top.xcck.admin.service.ResourceService;
-import top.xcck.admin.service.UploadInfoService;
-import top.xcck.admin.service.UploadService;
-import top.xcck.admin.util.QETag;
-import top.xcck.admin.util.RestResponse;
 import com.qiniu.common.QiniuException;
-import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
+import com.qiniu.storage.Region;
 import com.qiniu.storage.UploadManager;
 import com.qiniu.storage.model.FetchRet;
 import com.qiniu.util.Auth;
@@ -24,6 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import top.xcck.admin.entity.Resource;
+import top.xcck.admin.entity.UploadInfo;
+import top.xcck.admin.exception.MyException;
+import top.xcck.admin.service.ResourceService;
+import top.xcck.admin.service.UploadInfoService;
+import top.xcck.admin.service.UploadService;
+import top.xcck.admin.util.QETag;
+import top.xcck.admin.util.RestResponse;
 
 import java.io.File;
 import java.io.IOException;
@@ -44,14 +44,12 @@ public class QiniuUploadServiceImpl implements UploadService {
     }
 
     private UploadManager getUploadManager(){
-        Zone z = Zone.autoZone();      // 设置七牛云的地区,自动识别 zone0:华东   zone1:华北   zone2:华南  zoneNa0:北美
-        Configuration config = new Configuration(z);
+        Configuration config = new Configuration(Region.huabei());
         return new UploadManager(config);
     }
 
     private BucketManager getBucketManager(){
-        Zone z = Zone.zone0();
-        Configuration config = new Configuration(z);
+        Configuration config = new Configuration(Region.huabei());
         Auth auth = Auth.create(getUploadInfo().getQiniuAccessKey(), getUploadInfo().getQiniuSecretKey());
         return new BucketManager(auth,config);
     }

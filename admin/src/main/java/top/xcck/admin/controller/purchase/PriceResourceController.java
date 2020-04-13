@@ -11,11 +11,13 @@ import top.xcck.admin.annotation.SysLog;
 import top.xcck.admin.base.BaseController;
 import top.xcck.admin.base.MySysUser;
 import top.xcck.admin.controller.system.RoleController;
+import top.xcck.admin.entity.PriceResource;
 import top.xcck.admin.entity.Resource;
 import top.xcck.admin.util.LayerData;
 import top.xcck.admin.util.RestResponse;
 
 import javax.servlet.ServletRequest;
+import java.util.List;
 
 /**
  * @Description: 定价资源文件的相关前端控制器
@@ -51,16 +53,24 @@ public class PriceResourceController extends BaseController {
         return layerData;
     }
 
-    @RequiresPermissions("admin:purchase:price:resource")
+//    @RequiresPermissions("admin:purchase:price:resource")
     @GetMapping("/parse")
     @ResponseBody
     public RestResponse list(@RequestParam(value = "path") String path){
         // TODO 解析网络文件
-        // 将解析的数据加入资源文件
-        priceResourceService.parseExcel(path);
-        // 从资源文件读取数据，抓取京东自营价格，根据型号过滤sku，sku批量新增数据库
-        priceResultService.getJDPrice(path);
-        return RestResponse.success();
+        try {
+            // 将解析的数据加入资源文件
+            priceResourceService.parseExcel(path);
+            // 从数据库查找出来上面表格解析到数据库的记录
+            List<PriceResource> resourceList =  priceResourceService.findByWebUrl(path);
+            // 从资源文件读取数据，抓取京东自营价格，根据型号过滤sku，sku批量新增数据库
+            resourceList = priceResultService.getJDPrice(resourceList);
+            // 更新资源实体的搜索链接
+            priceResourceService.updateSearchUrl(resourceList);
+            return RestResponse.success();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return RestResponse.failure("解析失败，系统异常");
+        }
     }
-
 }

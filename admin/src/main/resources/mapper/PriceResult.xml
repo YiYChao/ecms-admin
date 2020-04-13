@@ -14,4 +14,20 @@
         a.update_by     AS "updateId",
     </sql>
 
+    <!--导出选中的记录数-->
+    <select id="chosenResult" parameterType="list" resultType="top.xcck.admin.entity.VO.PriceResultVO">
+        SELECT b.id, b.brand, b.type, b.color, b.size, b.shape, b.spec, b.others, b.cost, b.estimate_min, b.estimate_max,a.price, a.title,a.url FROM
+        ( SELECT source_id, price, title, url  FROM tb_purchase_price_result WHERE id IN
+            <foreach collection="list" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        ) a
+        LEFT JOIN tb_purchase_price_resource b ON b.id = a.source_id
+    </select>
+    <!--导出文件的全部查询结果记录-->
+    <select id="allResult" parameterType="list" resultType="top.xcck.admin.entity.VO.PriceResultVO">
+        SELECT b.id, b.brand, b.type, b.color, b.size, b.shape, b.spec, b.others, b.cost, b.estimate_min, b.estimate_max, a.price, a.title,a.url FROM
+        (SELECT * FROM tb_purchase_price_resource WHERE web_url=#{webUrl}) b
+        LEFT JOIN tb_purchase_price_result a ON b.id = a.source_id
+    </select>
 </mapper>

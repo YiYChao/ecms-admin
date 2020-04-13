@@ -1,10 +1,10 @@
 package top.xcck.admin.util;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
+import com.qiniu.storage.Region;
 import top.xcck.admin.entity.Resource;
 import top.xcck.admin.exception.MyException;
 import com.qiniu.common.QiniuException;
-import com.qiniu.common.Zone;
 import com.qiniu.http.Response;
 import com.qiniu.storage.BucketManager;
 import com.qiniu.storage.Configuration;
@@ -39,8 +39,7 @@ public class QiniuFileUtil {
 	 * @throws IOException
 	 */
 	public static String upload(MultipartFile file) throws IOException, NoSuchAlgorithmException {
-		Zone z = Zone.zone0();
-		Configuration config = new Configuration(z);
+		Configuration config = new Configuration(Region.huabei());
 		String fileName = "", extName = "", filePath = "";
 		if (null != file && !file.isEmpty()) {
 			extName = file.getOriginalFilename().substring(
@@ -80,8 +79,7 @@ public class QiniuFileUtil {
 	 * @param imgPath
 	 */
 	public static void deleteQiniuP(String imgPath) {
-		Zone z = Zone.zone0();
-		Configuration config = new Configuration(z);
+		Configuration config = new Configuration(Region.huabei());
 		Auth auth = Auth.create(qiniuAccess, qiniuKey);
 		BucketManager bucketManager = new BucketManager(auth,config);
 		imgPath = imgPath.replace(path, "");
@@ -98,8 +96,7 @@ public class QiniuFileUtil {
 	 * @return
 	 */
 	public static String uploadImageSrc(String src){
-		Zone z = Zone.zone0();
-		Configuration config = new Configuration(z);
+		Configuration config = new Configuration(Region.huabei());
 		Auth auth = Auth.create(qiniuAccess, qiniuKey);
 		BucketManager bucketManager = new BucketManager(auth, config);
 		String fileName = UUID.randomUUID().toString(),filePath="";
@@ -127,8 +124,7 @@ public class QiniuFileUtil {
 	 * @return
 	 */
 	public static String uploadLocalImg(String src) throws IOException, NoSuchAlgorithmException{
-		Zone z = Zone.zone0();
-		Configuration config = new Configuration(z);
+		Configuration config = new Configuration(Region.huabei());
 		UploadManager uploadManager = new UploadManager(config);
 		Auth auth = Auth.create(qiniuAccess, qiniuKey);
 		String token = auth.uploadToken(bucketName);
@@ -171,8 +167,7 @@ public class QiniuFileUtil {
 	 * @return
 	 */
 	public static String uploadBase64(String base64,String name) {
-		Zone z = Zone.zone0();
-		Configuration config = new Configuration(z);
+		Configuration config = new Configuration(Region.huabei());
 		UploadManager uploadManager = new UploadManager(config);
 		Auth auth = Auth.create(qiniuAccess, qiniuKey);
 		String token = auth.uploadToken(bucketName),filePath;

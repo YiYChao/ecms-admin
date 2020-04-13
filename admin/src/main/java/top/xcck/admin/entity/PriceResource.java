@@ -1,8 +1,11 @@
 package top.xcck.admin.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableName;
 import org.apache.commons.lang3.StringUtils;
 import top.xcck.admin.base.DataEntity;
+
+import java.util.List;
 
 /**
  * @Description: 定价商品资源实体类
@@ -22,14 +25,12 @@ public class PriceResource extends DataEntity<PriceResource> {
     private String spec; //规格
     private String others; //其他
     private String cost; //成本
-    private String estimate_min; //预估底价
-    private String estimate;//预估顶价
-    private String web_url; //文件的网络资源地址
-    private String search_url;  // 资源的网络搜索路径
-
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+    private String estimateMin; //预估底价
+    private String estimateMax;//预估顶价
+    private String webUrl; //文件的网络资源地址
+    private String searchUrl;  // 资源的网络搜索路径
+    @TableField(exist=false)
+    private List<PriceResult> resultList;   // 查询的价格列表
 
     public String getBrand() {
         return brand;
@@ -95,36 +96,44 @@ public class PriceResource extends DataEntity<PriceResource> {
         this.cost = cost;
     }
 
-    public String getEstimate_min() {
-        return estimate_min;
+    public String getEstimateMin() {
+        return estimateMin;
     }
 
-    public void setEstimate_min(String estimate_min) {
-        this.estimate_min = estimate_min;
+    public void setEstimateMin(String estimateMin) {
+        this.estimateMin = estimateMin;
     }
 
-    public String getEstimate() {
-        return estimate;
+    public String getEstimateMax() {
+        return estimateMax;
     }
 
-    public void setEstimate(String estimate) {
-        this.estimate = estimate;
+    public void setEstimateMax(String estimate) {
+        this.estimateMax = estimate;
     }
 
-    public String getWeb_url() {
-        return web_url;
+    public String getWebUrl() {
+        return webUrl;
     }
 
-    public void setWeb_url(String web_url) {
-        this.web_url = web_url;
+    public void setWebUrl(String webUrl) {
+        this.webUrl = webUrl;
     }
 
-    public String getSearch_url() {
-        return search_url;
+    public String getSearchUrl() {
+        return searchUrl;
     }
 
-    public void setSearch_url(String search_url) {
-        this.search_url = search_url;
+    public void setSearchUrl(String searchUrl) {
+        this.searchUrl = searchUrl;
+    }
+
+    public void setResultList(List<PriceResult> resultList) {
+        this.resultList = resultList;
+    }
+
+    public List<PriceResult> getResultList() {
+        return resultList;
     }
 
     /**
@@ -133,7 +142,7 @@ public class PriceResource extends DataEntity<PriceResource> {
      * @author YiYChao
      * @date 2020/4/11 17:47
      */
-    public String searmParams(){
+    public String searchParams(){
         String params = this.brand + " " + this.type + " ";
         params += StringUtils.isNotBlank(this.color) ? (this.color + " ") : "";
         params += StringUtils.isNotBlank(this.size) ? (this.size + " ") : "";
@@ -141,7 +150,6 @@ public class PriceResource extends DataEntity<PriceResource> {
         params += StringUtils.isNotBlank(this.spec) ? (this.spec + " ") : "";
         return params.trim();
     }
-
 
     @Override
     public String toString() {
@@ -154,9 +162,10 @@ public class PriceResource extends DataEntity<PriceResource> {
                 ", spec='" + spec + '\'' +
                 ", others='" + others + '\'' +
                 ", cost='" + cost + '\'' +
-                ", estimate_min='" + estimate_min + '\'' +
-                ", estimate='" + estimate + '\'' +
-                ", web_url='" + web_url + '\'' +
+                ", estimateMin='" + estimateMin + '\'' +
+                ", estimateMax='" + estimateMax + '\'' +
+                ", webUrl='" + webUrl + '\'' +
+                ", searchUrl='" + searchUrl + '\'' +
                 ", id=" + id +
                 '}';
     }

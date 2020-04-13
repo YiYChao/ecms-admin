@@ -3,6 +3,8 @@ package top.xcck.admin.entity;
 import com.baomidou.mybatisplus.annotations.TableName;
 import top.xcck.admin.base.DataEntity;
 
+import java.util.HashMap;
+
 /**
  * @Description: 定价商品结果实体类
  * @Author : YiYChao
@@ -13,7 +15,7 @@ import top.xcck.admin.base.DataEntity;
 public class PriceResult extends DataEntity<PriceResult> {
     private static final long serialVersionUID = 1L;
 
-    private Long source_id;
+    private Long sourceId;
     private String img;
     private String title;
     private String price;
@@ -23,12 +25,12 @@ public class PriceResult extends DataEntity<PriceResult> {
         return serialVersionUID;
     }
 
-    public Long getSource_id() {
-        return source_id;
+    public Long getSourceId() {
+        return sourceId;
     }
 
-    public void setSource_id(Long source_id) {
-        this.source_id = source_id;
+    public void setSourceId(Long sourceId) {
+        this.sourceId = sourceId;
     }
 
     public String getImg() {
@@ -66,12 +68,36 @@ public class PriceResult extends DataEntity<PriceResult> {
     @Override
     public String toString() {
         return "PriceResult{" +
-                "source_id=" + source_id +
+                "source_id=" + sourceId +
                 ", img='" + img + '\'' +
                 ", title='" + title + '\'' +
                 ", price='" + price + '\'' +
                 ", url='" + url + '\'' +
                 ", id=" + id +
                 '}';
+    }
+
+    /**
+     * @Description: 重写hashcode 方法，返回的hashCode不一样才再去比较每个属性的值，即equals
+     * @author YiYChao
+     * @date 2020/4/12 12:28
+     */
+    @Override
+    public int hashCode() {
+        return this.url.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null){
+            return false;
+        }
+        if (obj instanceof PriceResult){
+            PriceResult result = (PriceResult) obj;
+            if (result.getUrl().equals(this.url)){  // 只根据URL链接进行判断
+                return true;
+            }
+        }
+        return false;
     }
 }

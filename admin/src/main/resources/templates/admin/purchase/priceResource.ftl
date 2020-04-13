@@ -52,7 +52,6 @@
         <div class="layui-inline" id="content">
             <button type="button" class="layui-btn layui-btn-normal" id="test2"><i class="layui-icon"></i>上传定价文件</button>
         </div>
-
     </form>
     </div>
 </fieldset>
@@ -102,6 +101,7 @@
             width: $(parent.window).width()-223,
             cols: [[
                 {type:'checkbox'},
+                {field:'id', title: 'ID'},
                 {field:'fileName', title: '文件名称'},
                 {field:'hash',       title: 'hash值', width:'25%'},
                 {field:'fileSize',    title: '文件大小', width:'10%'},
@@ -121,7 +121,7 @@
                         $.post("${base}/admin/purchase/price/delete",{"ids":[data.id]},function (res){
                            if(res.success){
                                layer.msg("删除成功",{time: 1000},function(){
-                                   table.reload('test', t);
+                                   table.reload('test2', t);
                                });
                            }else{
                                layer.msg(res.message);

@@ -43,9 +43,9 @@ public class HttpClientUtils {
      * @date: 2020/2/8 17:19
      */
     private RequestConfig getConnfig(){
-        RequestConfig config = RequestConfig.custom().setConnectTimeout(3000)       // 设置连接超时时间
-                .setConnectionRequestTimeout(2000)      // 设置请求超时时间
-                .setSocketTimeout(3000)             // 设置资源传输超时时间
+        RequestConfig config = RequestConfig.custom().setConnectTimeout(10000)       // 设置连接超时时间
+                .setConnectionRequestTimeout(10000)      // 设置请求超时时间
+                .setSocketTimeout(10000)             // 设置资源传输超时时间
                 .build();
         return config;
     }
@@ -73,7 +73,7 @@ public class HttpClientUtils {
                 // 4、解析响应数据
                 HttpEntity responseEntity = httpResponse.getEntity();
                 if (responseEntity != null){
-                    return EntityUtils.toString(responseEntity);
+                    return EntityUtils.toString(responseEntity, "UTF-8");
                 }
             }
         } catch (IOException e) {
