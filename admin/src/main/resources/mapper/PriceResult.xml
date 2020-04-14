@@ -28,6 +28,6 @@
     <select id="allResult" parameterType="list" resultType="top.xcck.admin.entity.VO.PriceResultVO">
         SELECT b.id, b.brand, b.type, b.color, b.size, b.shape, b.spec, b.others, b.cost, b.estimate_min, b.estimate_max, a.price, a.title,a.url FROM
         (SELECT * FROM tb_purchase_price_resource WHERE web_url=#{webUrl}) b
-        LEFT JOIN tb_purchase_price_result a ON b.id = a.source_id
+        LEFT JOIN tb_purchase_price_result a ON b.id = a.source_id ORDER BY b.id ASC
     </select>
 </mapper>

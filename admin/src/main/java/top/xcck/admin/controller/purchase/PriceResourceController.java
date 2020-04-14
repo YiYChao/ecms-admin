@@ -53,8 +53,9 @@ public class PriceResourceController extends BaseController {
         return layerData;
     }
 
-//    @RequiresPermissions("admin:purchase:price:resource")
+    @RequiresPermissions("admin:purchase:price:resource")
     @GetMapping("/parse")
+    @SysLog("解析定价文件")
     @ResponseBody
     public RestResponse list(@RequestParam(value = "path") String path){
         // TODO 解析网络文件
@@ -73,4 +74,20 @@ public class PriceResourceController extends BaseController {
             return RestResponse.failure("解析失败，系统异常");
         }
     }
+
+    @RequiresPermissions("admin:purchase:price:resource:delete")
+    @GetMapping("/delete")
+    @SysLog("删除询价文件")
+    @ResponseBody
+    public RestResponse deleteResource(@RequestParam(value = "sid") Integer sid){
+        if (sid == null || sid == 0){
+            return RestResponse.failure("请选择要删除的文件！");
+        }
+        boolean delete = priceResourceService.deleteById(sid);
+        if (delete){
+            return RestResponse.success("删除成功！");
+        }
+        return RestResponse.failure("删除失败");
+    }
+
 }

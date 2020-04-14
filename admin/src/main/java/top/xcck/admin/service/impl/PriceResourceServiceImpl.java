@@ -33,7 +33,7 @@ public class PriceResourceServiceImpl extends ServiceImpl<PriceResourceDao, Pric
         Workbook workbook = getWorkbook(path);
         Sheet sheet = workbook.getSheetAt(0);
         int lastRow = sheet.getLastRowNum();
-        for (int i = 2; i < lastRow; i++) {
+        for (int i = 2; i <= lastRow; i++) {
             Row row = sheet.getRow(i);
             PriceResource resource = parseRow2Entity(row);      // 解析表格行
             if (resource != null){
@@ -47,6 +47,7 @@ public class PriceResourceServiceImpl extends ServiceImpl<PriceResourceDao, Pric
 
     /**
      * @param path 询价文件的网络路径
+     *
      * @return List<PriceResource> 资源文件列表
      * @Description: 根据询价文件的网络路径查找询价资源文件
      * @author YiYChao
@@ -108,25 +109,26 @@ public class PriceResourceServiceImpl extends ServiceImpl<PriceResourceDao, Pric
         }
         switch (12 - lastCellNum) {
             case 1:
-                resource.setEstimateMax(row.getCell(lastCellNum - 1).toString());    // 预估顶价
+                resource.setEstimateMax(row.getCell(10).toString());    // 预估顶价
             case 2:
-                resource.setEstimateMin(row.getCell(lastCellNum - 2).toString()); // 预估底价
+                resource.setEstimateMin(row.getCell(9).toString()); // 预估底价
             case 3:
-                resource.setCost(row.getCell(lastCellNum - 3).toString());    // 成本
+                resource.setCost(row.getCell(8).toString());    // 成本
             case 4:
-                resource.setOthers(row.getCell(lastCellNum - 4).toString());  // 其它
+                resource.setOthers(row.getCell(7).toString());  // 其它
             case 5:
-                resource.setSpec(row.getCell(lastCellNum - 5).toString());    // 规格
+                resource.setSpec(row.getCell(6).toString());    // 规格
             case 6:
-                resource.setShape(row.getCell(lastCellNum - 6).toString());   // 形状
+                resource.setShape(row.getCell(5).toString());   // 形状
             case 7:
-                resource.setSize(row.getCell(lastCellNum - 7).toString());    // 大小
+                resource.setSize(row.getCell(4).toString());    // 大小
             case 8:
-                resource.setColor(row.getCell(lastCellNum - 8).toString());   // 颜色
+                resource.setColor(row.getCell(3).toString());   // 颜色
             case 9:
-                resource.setType(row.getCell(lastCellNum - 9).toString());    // 型号
+                resource.setType(row.getCell(2).toString());    // 型号
             case 10:
-                resource.setBrand(row.getCell(lastCellNum - 10).toString());   // 品牌
+                resource.setBrand(row.getCell(1).toString());   // 品牌
+                break;
             default:
                 System.out.println("超出表格指定范围的无用内容，行号：" + row.getRowNum() + "列标：" + lastCellNum);
         }

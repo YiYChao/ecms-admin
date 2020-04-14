@@ -19,22 +19,9 @@
     <div class="layui-field-box">
     <form class="layui-form">
         <div class="layui-inline" style="margin-left: 15px">
-            <label>资源来源:</label>
-            <div class="layui-input-inline">
-                <select name="s_source">
-                    <option value="">请选择资源来源</option>
-                    <@my type="sys_rescource_source">
-                        <#list result as r>
-                    <option value="${r.value}" >${r.label}</option>
-                        </#list>
-                    </@my>
-                </select>
-            </div>
-        </div>
-        <div class="layui-inline" style="margin-left: 15px">
             <label>资源类型:</label>
             <div class="layui-input-inline">
-                <input type="text" value="" name="s_type" placeholder="请输入类型(.jpg/.png)" class="layui-input search_input">
+                <input type="text" value="" name="s_type" placeholder="请输入类型(.xls/.xlsx)" class="layui-input search_input">
             </div>
         </div>
         <div class="layui-inline" style="margin-left: 15px">
@@ -118,15 +105,14 @@
             if(obj.event === "del"){
                 layer.confirm("你确定要删除该资源么？",{btn:['是的,我确定','我再想想']},
                     function(){
-                        $.post("${base}/admin/purchase/price/delete",{"ids":[data.id]},function (res){
+                        $.post("${base}/admin/purchase/price/resource/delete",{"sid":data.id},function (res){
                            if(res.success){
                                layer.msg("删除成功",{time: 1000},function(){
-                                   table.reload('test2', t);
+                                   table.reload('test', t);
                                });
                            }else{
                                layer.msg(res.message);
                            }
-
                         });
                     }
                 )
@@ -146,40 +132,6 @@
                     $.get('${base}/admin/purchase/price/resource/parse', {path: res.data.url});
                 }
             }
-        });
-
-        //功能按钮
-        var active={
-            deleteSome : function(){                        //批量删除
-                var checkStatus = table.checkStatus('test'),
-                     data = checkStatus.data;
-                if(data.length > 0){
-                    layer.confirm("你确定要删除这些资源么？",{btn:['是的,我确定','我再想想']},
-                        function(){
-                            var d = [];
-                            for(var i=0;i<data.length;i++){
-                                d.push(data[i].id);
-                            }
-                            $.post("${base}/admin/system/rescource/delete",{ids:d},function (res) {
-                                if(res.success){
-                                    layer.msg("删除成功",{time: 1000},function(){
-                                        table.reload('test', t);
-                                    });
-                                }else{
-                                    layer.msg(res.message);
-                                }
-                            });
-                        }
-                    )
-                }else{
-                    layer.msg("请选择需要删除的资源",{time:1000});
-                }
-            }
-        };
-
-        $('.layui-inline .layui-btn').on('click', function(){
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
         });
 
         //搜索

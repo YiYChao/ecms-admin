@@ -1,10 +1,7 @@
 package top.xcck.admin.service.impl;
 
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
-import freemarker.template.utility.StringUtil;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -18,7 +15,6 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import top.xcck.admin.dao.PriceResourceDao;
 import top.xcck.admin.dao.PriceResultDao;
 import top.xcck.admin.entity.PriceResource;
 import top.xcck.admin.entity.PriceResult;
@@ -29,7 +25,10 @@ import top.xcck.admin.util.HttpClientUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @Description: 定价结果业务层操作接口实现
@@ -53,9 +52,10 @@ public class PriceResultServiceImpl extends ServiceImpl<PriceResultDao, PriceRes
             String searchUrl = baseUrl + encodeParams + "&wq=" + encodeParams;      // 获得资源的网络搜索路径
             resource.setSearchUrl(searchUrl);       // 更新资源实体的搜索链接
             Set<PriceResult> resultList = crawerJd(searchUrl, 3);        // 抓取京东数据
+            System.out.println("发送网络请求：" + searchUrl + "请求到自营数据条数：" + resourceList.size());
             for (PriceResult result : resultList){
-                // 标题包含品牌和型号，则将数据新增到数据库
-                if (result.getTitle().contains(resource.getBrand()) && result.getTitle().contains(resource.getType())){
+                // 标题包含品牌和型号(都转换成大写进行比较)，则将数据新增到数据库
+                if (result.getTitle().contains(resource.getBrand()) && result.getTitle().toUpperCase().contains(resource.getType().toUpperCase())){
                     result.setSourceId(resource.getId());      // 设置外键
                     baseMapper.insert(result);      // 新增入数据库
                 }
@@ -91,6 +91,11 @@ public class PriceResultServiceImpl extends ServiceImpl<PriceResultDao, PriceRes
         Set<PriceResult> resultSet = new HashSet<>();       // 结果列表
         for (int i = 0; i < page; i++) {
             String html = httpClientUtils.doGetHtml(searchUrl + "&page=" + i);
+            try {
+                Thread.sleep(500);      // 暂停半分钟
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Document document = Jsoup.parse(html);      // 解析搜索页结果
             Elements itemList = document.getElementsByClass("gl-item");
             for (Element item : itemList){  // 遍历商品结果列表

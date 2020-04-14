@@ -108,7 +108,7 @@ public class FileController {
     }
 
     /**
-     * wangEditor批量上传图片
+     * 批量上传图片
      * @param file
      * @return
      * @throws Exception
@@ -150,7 +150,7 @@ public class FileController {
     }
 
     /**
-     * wangEditor复制新闻中包含图片的话吧图片上传到七牛上并更换图片地址
+     * 复制新闻中包含图片的话吧图片上传到七牛上并更换图片地址
      * @return
      */
     @PostMapping("doContent")
@@ -244,8 +244,6 @@ public class FileController {
         conn.disconnect();
         return RestResponse.success();
     }
-
-
 
 
     public String localUpload(HttpServletRequest request, MultipartFile file) {
