@@ -2,6 +2,7 @@ package top.xcck.admin.controller.purchase;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,12 +42,15 @@ public class PriceResourceController extends BaseController {
     @ResponseBody
     public LayerData<Resource> list(@RequestParam(value = "page",defaultValue = "1")Integer page,
                                     @RequestParam(value = "limit",defaultValue = "10")Integer limit,
-                                    ServletRequest request){
+                                    ServletRequest request, String remarks){
         LayerData<Resource> layerData = new LayerData<>();
         EntityWrapper<Resource> wrapper = new EntityWrapper<>();        // 设置查询条件
-        wrapper.eq("create_by", MySysUser.id());
+        wrapper.eq("create_by", MySysUser.id());    // 自己上传的文件
+        wrapper.eq("del_flag", 0);      // 未删除的文件
         wrapper.like("file_type", ".xls");
-
+        if (StringUtils.isNotBlank(remarks)){
+            wrapper.like("remarks", remarks);   // 设置文件名称的模糊查询
+        }
         Page<Resource> productPage = resourceService.selectPage(new Page<Resource>(page, limit), wrapper);
         layerData.setCount(productPage.getTotal());
         layerData.setData(productPage.getRecords());
@@ -76,14 +80,19 @@ public class PriceResourceController extends BaseController {
     }
 
     @RequiresPermissions("admin:purchase:price:resource:delete")
-    @GetMapping("/delete")
+    @PostMapping("/delete")
     @SysLog("删除询价文件")
     @ResponseBody
-    public RestResponse deleteResource(@RequestParam(value = "sid") Integer sid){
+    public RestResponse deleteResource(@RequestParam(value = "sid") Long sid){
         if (sid == null || sid == 0){
             return RestResponse.failure("请选择要删除的文件！");
         }
-        boolean delete = priceResourceService.deleteById(sid);
+        Resource resource = resourceService.selectById(sid);        // 找出要删除的资源实体
+        if (resource == null){      // 资源不存在
+            return RestResponse.failure("操作异常，删除失败！");
+        }
+        resource.setDelFlag(true);      // 进行逻辑删除
+        boolean delete = resourceService.updateById(resource);
         if (delete){
             return RestResponse.success("删除成功！");
         }

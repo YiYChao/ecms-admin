@@ -19,15 +19,9 @@
     <div class="layui-field-box">
     <form class="layui-form">
         <div class="layui-inline" style="margin-left: 15px">
-            <label>资源类型:</label>
+            <label>文件名称:</label>
             <div class="layui-input-inline">
-                <input type="text" value="" name="s_type" placeholder="请输入类型(.xls/.xlsx)" class="layui-input search_input">
-            </div>
-        </div>
-        <div class="layui-inline" style="margin-left: 15px">
-            <label>hash值:</label>
-            <div class="layui-input-inline">
-                <input type="text" value="" name="s_hash" placeholder="请输入hash值" class="layui-input search_input">
+                <input type="text" value="" name="remarks" placeholder="请输入文件名" class="layui-input search_input">
             </div>
         </div>
         <div class="layui-inline">
@@ -35,6 +29,9 @@
         </div>
         <div class="layui-inline" >
             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+        </div>
+        <div class="layui-inline">
+            <a class="layui-btn layui-btn-warm" href="http://q8iig6y6e.bkt.clouddn.com/sxxcck/%E5%AE%9A%E4%BB%B7%E6%9F%A5%E8%AF%A2%E6%A8%A1%E6%9D%BF.xlsx">模板下载</a>
         </div>
         <div class="layui-inline" id="content">
             <button type="button" class="layui-btn layui-btn-normal" id="test2"><i class="layui-icon"></i>上传定价文件</button>
@@ -45,15 +42,6 @@
 <div class="layui-form users_list">
     <table class="layui-table" id="test" lay-filter="demo"></table>
 
-    <script type="text/html" id="source">
-        <@my type="sys_rescource_source">
-            <#list result as r>
-            {{#  if(d.source == '${r.value}'){ }}
-            <span>${r.label}</span>
-            {{#  } }}
-            </#list>
-        </@my>
-    </script>
     <script type="text/html" id="barDemo">
         <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
     </script>
@@ -88,13 +76,12 @@
             width: $(parent.window).width()-223,
             cols: [[
                 {type:'checkbox'},
-                {field:'id', title: 'ID'},
-                {field:'fileName', title: '文件名称'},
-                {field:'hash',       title: 'hash值', width:'25%'},
-                {field:'fileSize',    title: '文件大小', width:'10%'},
-                {field:'fileType',    title: '文件类型', width:'10%'},
-                {field:'createDate',  title: '创建时间', width:'10%',templet:'<div>{{ layui.laytpl.toDateString(d.createDate) }}</div>',unresize: true}, //单元格内容水平居中
-                {fixed: 'right', title: '操作', width: '10%',align: 'center',toolbar: '#barDemo'}
+                {field:'id', title: 'ID', width:'10%'},
+                {field:'remarks', title: '文件名称'},
+                {field:'fileSize',    title: '文件大小', width:'15%'},
+                {field:'fileType',    title: '文件类型', width:'15%'},
+                {field:'createDate',  title: '创建时间', width:'15%',templet:'<div>{{ layui.laytpl.toDateString(d.createDate) }}</div>',unresize: true}, //单元格内容水平居中
+                {fixed: 'right', title: '操作', width: '15%',align: 'center',toolbar: '#barDemo'}
             ]]
         };
         table.render(t);

@@ -28,19 +28,12 @@
             <input class="layui-input" name="code" placeholder="验证码" lay-verify="required" type="text" autocomplete="off">
             <div class="code"><img src="${base}/genCaptcha" width="116" height="36" id="mycode"></div>
         </div>
-        <div class="layui-form-item">
-            <input type="checkbox" name="rememberMe" value="true" lay-skin="primary" checked title="记住帐号?">
+        <div class="layui-form-item" class="rememberMe">
+            <input type="checkbox" name="rememberMe" value="true" lay-skin="primary" checked title="记住帐号?" class="rememberMe">
         </div>
         <div class="layui-form-item">
             <button class="layui-btn login_btn" lay-submit="" lay-filter="login">登录</button>
         </div>
-        <#--<div class="layui-form-item">
-            <fieldset class="layui-elem-field">
-                <div class="layui-field-box" style="color: #fff;font-size: 20px;">
-                    用户名:test &nbsp;&nbsp;&nbsp;密码:1
-                </div>
-            </fieldset>
-        </div>-->
     </form>
 </div>
 <script type="text/javascript" src="${base}/static/layui/layui.js"></script>
@@ -53,10 +46,7 @@
                 form = layui.form;
 
         $(document).ready(function() {
-            var srcBgArray = ["https://static.mysiteforme.com/chun.jpg",
-                "https://static.mysiteforme.com/xia.jpg",
-                "https://static.mysiteforme.com/qiu.jpg",
-                "https://static.mysiteforme.com/dong.jpg"];
+            var srcBgArray = ["http://q8iig6y6e.bkt.clouddn.com/sxxcck/bg_523e92eadbb0b.jpg"];
             $('#bg-body').bcatBGSwitcher({
                 timeout:5000,
                 urls: srcBgArray,

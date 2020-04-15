@@ -57,6 +57,9 @@ public class PriceResultController extends BaseController {
         String webUrl = "";
         if (sid != null && sid > 0){
             Resource resource = resourceService.selectById(sid);        // 通过资源文件的Id查询资源的全路径
+            if (resource.getDelFlag()){ // 资源文件已删除
+                return layerData;
+            }
             webUrl = resource.getWebUrl();
         }
         // 创建资源的实体的查询条件对象

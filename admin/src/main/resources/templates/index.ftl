@@ -123,7 +123,7 @@
     </div>
     <!-- 底部 -->
     <div class="layui-footer footer">
-        <p>Copyright © 2020山西星辰创客网络科技有限公司  Design By 晓超 <a href="http://www.miibeian.gov.cn" target="_blank">晋ICP备12345678号 </a></p>
+        <p>Copyright © 2020山西星辰创客网络科技有限公司  Design By 晓超 <a href="http://www.beian.miit.gov.cn" target="_blank">赣ICP备20004682号-1</a></p>
     </div>
 </div>
 <script>

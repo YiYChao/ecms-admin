@@ -121,6 +121,7 @@
                 table.render({
                     elem: '#test2',
                     width: $(parent.window).width()-223,
+                    limit: 20,
                     cols: [[
                         {type:'checkbox'},
                         {field:'id', title: 'ID',width:70},

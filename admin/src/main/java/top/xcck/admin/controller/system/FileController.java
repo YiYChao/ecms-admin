@@ -1,9 +1,12 @@
 package top.xcck.admin.controller.system;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import top.xcck.admin.annotation.SysLog;
+import top.xcck.admin.entity.Resource;
 import top.xcck.admin.entity.Site;
+import top.xcck.admin.service.ResourceService;
 import top.xcck.admin.service.UploadService;
 import top.xcck.admin.util.QiniuFileUtil;
 import top.xcck.admin.util.RestResponse;
@@ -59,6 +62,10 @@ public class FileController {
     @Qualifier("localService")
     private UploadService localService;
 
+    @Autowired
+    private ResourceService resourceService;
+
+
     @PostMapping("upload")
     @ResponseBody
     @SysLog("文件上传")
@@ -67,7 +74,6 @@ public class FileController {
         if(site == null){
             return RestResponse.failure("加载信息错误");
         }
-
         if(file == null){
             return RestResponse.failure("上传文件为空 ");
         }
@@ -85,6 +91,11 @@ public class FileController {
             }
             m.put("url", url);
             m.put("name", file.getOriginalFilename());
+
+            Resource resource = resourceService.selectOne(new EntityWrapper<Resource>().eq("web_url", url));
+            resource.setRemarks(file.getOriginalFilename());        // 设置文件的原始名称
+            resourceService.updateById(resource);   // 更新资源实体，加入文件的原始名称
+
         } catch (Exception e) {
             e.printStackTrace();
             return RestResponse.failure(e.getMessage());
